@@ -57,6 +57,7 @@ module Capybara::Webkit
     end
 
     def kill_process
+      begin
       if RUBY_PLATFORM =~ /mingw32/
         Process.kill(9, @pid)
       else
@@ -75,7 +76,7 @@ module Capybara::Webkit
         @socket.close
       rescue IOError
       end
-    end
+    
       # This just means that the webkit_server process has already ended
     end
 
