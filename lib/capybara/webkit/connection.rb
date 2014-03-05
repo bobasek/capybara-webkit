@@ -42,8 +42,9 @@ module Capybara::Webkit
     end
 
     def open_pipe
-      _, @pipe_stdout, @pipe_stderr, wait_thr = Open3.popen3(SERVER_PATH)
-      @pid = wait_thr[:pid]
+      @pipe_stdin, @pipe_stdout, @pipe_stderr, @wait_thr = Open3.popen3(SERVER_PATH)
+      
+      @pid = @wait_thr[:pid]
       register_shutdown_hook
     end
 
@@ -76,7 +77,7 @@ module Capybara::Webkit
         @socket.close
       rescue IOError
       end
-    
+   end 
       # This just means that the webkit_server process has already ended
     end
 
