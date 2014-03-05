@@ -63,6 +63,19 @@ module Capybara::Webkit
         Process.kill("INT", @pid)
       end
     rescue Errno::ESRCH
+    ensure
+      [@pipe_stdin, @pipe_stdout, @pipe_stderr].each do |pipe|
+        begin
+          pipe.close
+        rescue =>e
+        end
+      end
+      @wait_thr.exit
+      begin
+        @socket.close
+      rescue IOError
+      end
+    end
       # This just means that the webkit_server process has already ended
     end
 
